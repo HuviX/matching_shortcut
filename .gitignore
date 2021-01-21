@@ -1,1 +1,6 @@
 /.ipynb_checkpoints
+data/
+__pycache__
+image_pairs.tar.gz
+.gitignore
+Similarity_nb.ipynb
