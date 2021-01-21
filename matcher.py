@@ -56,7 +56,7 @@ class BaseModel(nn.Module):
 class Matcher:
     def __init__(
         self,
-        params: dict, #params for KNN
+        params: dict,
         imgs: list,
         labels: list,
         vectorizer,

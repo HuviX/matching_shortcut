@@ -15,7 +15,7 @@ class NeighborLoader:
     def name2class(self, name):
         return self._name2class[name]
     
-    def load(self, path):
+    def load(self, path: str):
         """
         Parameters:
         ------------
