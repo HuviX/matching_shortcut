@@ -57,8 +57,6 @@ class Matcher:
     def __init__(
         self,
         params: dict,
-        imgs: list,
-        labels: list,
         vectorizer,
         loader,
 ):
@@ -68,21 +66,22 @@ class Matcher:
         ------------
         params: dict 
             dictionary of KNeighborsClassifier params
-        imgs: list 
-            list of pytorch tensors
-        labels: list 
-            list of image labels
+        
         vectorizer: BaseModel instance
             Transform input image (from list of imgs) to numpy vector.
+        
+        loader: CustomLoader instance
+            Prepares input image to pass it in vectorizer
+
         """
 
         self.vectorizer = vectorizer
         self.loader = loader
         self.model = KNeighborsClassifier(**params)
-        self.__fill_Xy(imgs, labels)
+        self.__fill_Xy()
         self.__fit()
     
-    def __fill_Xy(self, imgs: list, labels: list):
+    def __fill_Xy(self):
         """
         Fills X and y data.
         X corresponds to vectorized images
@@ -91,10 +90,8 @@ class Matcher:
 
         Parameters:
         ------------
-        imgs: list 
-            list of pytorch tensors
-        labels: list 
-            list of image labels
+        loader: CustomLoader instance
+            Prepares input image to pass it in vectorizer
 
         Returns:
         ------------
@@ -103,10 +100,10 @@ class Matcher:
         
         X, y = [], []
         with torch.no_grad():
-            for i, image in enumerate(imgs):
+            for i, image in enumerate(self.loader):
                 out = self.vectorizer(image)
                 X.append(out)
-                y.append(labels[i])
+                y.append(i)
         self.X = np.array(X)
         self.y = np.array(y)
 
